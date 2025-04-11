@@ -6,14 +6,19 @@ import com.rasimmetindemiral.broker_api.model.entity.Customer;
 import com.rasimmetindemiral.broker_api.model.enums.Role;
 import com.rasimmetindemiral.broker_api.service.CustomerService;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -21,6 +26,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CustomerController {
 
+    private static final Logger logger = LoggerFactory.getLogger(CustomerController.class);
     private final CustomerService customerService;
     private final PasswordEncoder passwordEncoder;
 
@@ -48,6 +54,7 @@ public class CustomerController {
 
     // new customer reqister service
     @PostMapping("/register")
+    @PreAuthorize("isAnonymous or hasRole('ADMIN')")
     public ResponseEntity<CustomerDto> register(@RequestBody CustomerDto dto) {
         if (customerService.existsByUsername(dto.getUsername())) {
             throw new RuntimeException("Username already exists");
@@ -67,5 +74,27 @@ public class CustomerController {
         Customer saved = customerService.save(newCustomer);
         CustomerDto responseDto = CustomerMapper.toDto(saved);
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
+    }
+
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN','CUSTOMER')")
+    public ResponseEntity<Map<String, String>> deleteCustomer(@PathVariable Long id) {
+        if (!customerService.existsById(id)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "Customer not found with id: " + id));
+        }
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUsername = authentication.getName();
+        logger.info("currentUsername {}",currentUsername);
+
+        Customer targetCustomer = customerService.findById(id).orElseThrow(() -> new RuntimeException("Customer not found"));
+
+        //kendi disinda farkli customer silinmemesi icin kontrol ekledim.
+        if (authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_CUSTOMER")) && !targetCustomer.getUsername().equals(currentUsername)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", "You are not allowed to delete another customer."));
+        }
+
+        customerService.deleteById(id);
+        return ResponseEntity.ok(Map.of("message", "Customer deleted successfully"));
     }
 }

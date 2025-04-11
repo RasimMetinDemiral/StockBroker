@@ -3,17 +3,22 @@ package com.rasimmetindemiral.broker_api.controller;
 import com.rasimmetindemiral.broker_api.mapper.AssetMapper;
 import com.rasimmetindemiral.broker_api.model.dto.AssetDto;
 import com.rasimmetindemiral.broker_api.model.entity.Asset;
+import com.rasimmetindemiral.broker_api.model.entity.Customer;
 import com.rasimmetindemiral.broker_api.model.enums.Role;
 import com.rasimmetindemiral.broker_api.security.CustomUserDetails;
 import com.rasimmetindemiral.broker_api.service.AssetService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/assets")
@@ -65,5 +70,16 @@ public class AssetController {
         existing.setUsableSize(dto.getUsableSize());
         Asset updated = assetService.updateAsset(existing);
         return ResponseEntity.ok(AssetMapper.toDto(updated));
+    }
+
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Map<String, String>> deleteAsset(@PathVariable Long id) {
+        if (!assetService.existsById(id)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "asset not found with id: " + id));
+        }
+
+        assetService.deleteById(id);
+        return ResponseEntity.ok(Map.of("message", "asset deleted successfully"));
     }
 }

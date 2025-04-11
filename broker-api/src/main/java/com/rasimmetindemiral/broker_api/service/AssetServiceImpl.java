@@ -41,4 +41,14 @@ public class AssetServiceImpl implements AssetService{
         logger.info("get asset by id: {}", id);
         return assetRepository.findById(id).orElseThrow(()-> new RuntimeException("Asset not found with id: " + id));
     }
+
+    @Override
+    public void deleteById(Long id) {
+        assetRepository.deleteById(id);
+    }
+
+    @Override
+    public boolean existsById(Long id) {
+        return assetRepository.existsById(id);
+    }
 }

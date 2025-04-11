@@ -7,4 +7,6 @@ public interface AssetService {
     List<Asset> getAssetsByCustomerId(Long customerId);
     Asset updateAsset(Asset asset);
     Asset getAssetById(Long id);
+    void deleteById(Long id);
+    boolean existsById(Long id);
 }
