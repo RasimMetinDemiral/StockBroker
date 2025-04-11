@@ -47,4 +47,14 @@ public class CustomerServiceImpl implements CustomerService{
         logger.info("Fetching all customers");
         return customerRepository.findAll();
     }
+
+    @Override
+    public void deleteById(Long id) {
+        customerRepository.deleteById(id);
+    }
+
+    @Override
+    public boolean existsById(Long id) {
+        return customerRepository.existsById(id);
+    }
 }

@@ -11,4 +11,6 @@ public interface CustomerService {
     boolean existsByUsername(String username);
     Customer save(Customer customer);
     List<Customer> findAll();
+    void deleteById(Long id);
+    boolean existsById(Long id);
 }
