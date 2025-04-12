@@ -40,9 +40,7 @@ public class AuthController {
             return ResponseEntity.ok(new LoginResponse(token));
         } catch (AuthenticationException ex) {
             logger.error("Authentication failed for user: {}", loginRequest.getUsername());
-            return ResponseEntity
-                    .status(HttpStatus.UNAUTHORIZED)
-                    .body(Map.of("error", "Invalid username or password"));
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Invalid username or password"));
         }
     }
 }

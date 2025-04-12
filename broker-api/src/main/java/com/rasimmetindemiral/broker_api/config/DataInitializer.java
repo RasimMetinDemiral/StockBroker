@@ -40,19 +40,11 @@ public class DataInitializer implements CommandLineRunner {
             logger.info("run() method is started. Initial data is generating...");
 
             // default admin values
-            Customer admin = Customer.builder()
-                    .username("admin")
-                    .password(passwordEncoder.encode("admin123"))
-                    .role(Role.ADMIN)
-                    .build();
+            Customer admin = Customer.builder().username("admin").password(passwordEncoder.encode("admin123")).role(Role.ADMIN).build();
             customerRepository.save(admin);
 
             // default customer values
-            Customer customer = Customer.builder()
-                    .username("Metin")
-                    .password(passwordEncoder.encode("123456"))
-                    .role(Role.CUSTOMER)
-                    .build();
+            Customer customer = Customer.builder().username("Metin").password(passwordEncoder.encode("123456")).role(Role.CUSTOMER).build();
             customerRepository.save(customer);
 
             // default customer icin initial asset value
@@ -64,27 +56,11 @@ public class DataInitializer implements CommandLineRunner {
             assetRepository.save(btcAsset);
 
             // BUY order
-            Order buyOrder = Order.builder()
-                    .assetName("BTC")
-                    .orderSide(OrderSide.BUY)
-                    .orderStatus(OrderStatus.PENDING)
-                    .size(1.0)
-                    .price(500.0)
-                    .createDate(LocalDateTime.now())
-                    .customer(customer)
-                    .build();
+            Order buyOrder = Order.builder().assetName("BTC").orderSide(OrderSide.BUY).orderStatus(OrderStatus.PENDING).size(1.0).price(500.0).createDate(LocalDateTime.now()).customer(customer).build();
             orderRepository.save(buyOrder);
 
             // SELL order
-            Order sellOrder = Order.builder()
-                    .assetName("BTC")
-                    .orderSide(OrderSide.SELL)
-                    .orderStatus(OrderStatus.PENDING)
-                    .size(1.0)
-                    .price(500.0)
-                    .createDate(LocalDateTime.now())
-                    .customer(customer)
-                    .build();
+            Order sellOrder = Order.builder().assetName("BTC").orderSide(OrderSide.SELL).orderStatus(OrderStatus.PENDING).size(1.0).price(500.0).createDate(LocalDateTime.now()).customer(customer).build();
             orderRepository.save(sellOrder);
 
             logger.info("default data is generated...");
