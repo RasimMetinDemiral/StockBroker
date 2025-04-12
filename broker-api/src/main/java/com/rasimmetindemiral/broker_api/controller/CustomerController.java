@@ -74,11 +74,7 @@ public class CustomerController {
             throw new RuntimeException("Password must be at least 6 characters");
         }
 
-        Customer newCustomer = Customer.builder()
-                .username(dto.getUsername())
-                .password(passwordEncoder.encode(rawPassword))
-                .role(Role.CUSTOMER)
-                .build();
+        Customer newCustomer = Customer.builder().username(dto.getUsername()).password(passwordEncoder.encode(rawPassword)).role(Role.CUSTOMER).build();
 
         Customer saved = customerService.save(newCustomer);
         CustomerDto responseDto = CustomerMapper.toDto(saved);
