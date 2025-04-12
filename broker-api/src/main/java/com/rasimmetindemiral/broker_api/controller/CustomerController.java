@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -34,7 +35,16 @@ public class CustomerController {
     @GetMapping("/me")
     @PreAuthorize("hasRole('CUSTOMER')")
     public ResponseEntity<CustomerDto> getCurrentCustomer(@AuthenticationPrincipal Customer customer) {
-        return ResponseEntity.ok(CustomerMapper.toDto(customer));
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName(); // get username from authentication.
+        Optional<Customer> optionalCustomer = customerService.findByUsername(username);
+
+        if (optionalCustomer.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+        CustomerDto dto = CustomerMapper.toDto(optionalCustomer.get());
+        return ResponseEntity.ok(dto);
     }
 
     // admin, ID ile customer data list
@@ -54,7 +64,6 @@ public class CustomerController {
 
     // new customer reqister service
     @PostMapping("/register")
-    @PreAuthorize("isAnonymous or hasRole('ADMIN')")
     public ResponseEntity<CustomerDto> register(@RequestBody CustomerDto dto) {
         if (customerService.existsByUsername(dto.getUsername())) {
             throw new RuntimeException("Username already exists");
