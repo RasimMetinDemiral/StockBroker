@@ -1,6 +1,7 @@
 # StockBroker
 Internal brokerage system API: Secure order management (CRUD) for stocks, designed for employee workflows.
 
+# Important Note: if you want to clone project,  use dev branch. 
 
 Requirements
 
@@ -44,21 +45,12 @@ Running the Application
   •	Prometheus: http://localhost:9090/actuator/prometheus
   •	Grafana Dashboard: http://localhost:3000/login 
     Username:admin, pass:admin
-  •	Database:
-    MYSQL_USER: root
-    MYSQL_ROOT_PASSWORD: rootroot
-    MYSQL_DATABASE: broker_db
-
-
+  •Database -> MYSQL_USER: root, MYSQL_ROOT_PASSWORD: rootroot ,MYSQL_DATABASE: broker_db
 
 Application Credentials
 
-  Role	Username	Password
-  Admin	admin	admin123
-  Customer	Metin	123456
-
-		
-		
+  Role Username Password --> Admin admin admin123, Customer Metin 123456
+				
 API Testing with Swagger
 
     Get request for admin role steps:
