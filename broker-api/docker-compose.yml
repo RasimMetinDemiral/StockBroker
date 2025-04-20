@@ -36,6 +36,8 @@ services:
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
     depends_on:
       - broker-api
+    networks:
+      - broker-net
 
   grafana:
     image: grafana/grafana
@@ -49,6 +51,8 @@ services:
       - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
     depends_on:
       - prometheus
+    networks:
+      - broker-net
 volumes:
   mysql-data:
   grafana-data:
