@@ -76,8 +76,8 @@ public class CustomerController {
 
         Customer newCustomer = Customer.builder().username(dto.getUsername()).password(passwordEncoder.encode(rawPassword)).role(Role.CUSTOMER).build();
 
-        Customer saved = customerService.save(newCustomer);
-        CustomerDto responseDto = CustomerMapper.toDto(saved);
+        Customer savedCustomer = customerService.save(newCustomer);
+        CustomerDto responseDto = CustomerMapper.toDto(savedCustomer);
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
     }
 

@@ -3,7 +3,6 @@ package com.rasimmetindemiral.broker_api.controller;
 import com.rasimmetindemiral.broker_api.mapper.AssetMapper;
 import com.rasimmetindemiral.broker_api.model.dto.AssetDto;
 import com.rasimmetindemiral.broker_api.model.entity.Asset;
-import com.rasimmetindemiral.broker_api.model.entity.Customer;
 import com.rasimmetindemiral.broker_api.model.enums.Role;
 import com.rasimmetindemiral.broker_api.security.CustomUserDetails;
 import com.rasimmetindemiral.broker_api.service.AssetService;
@@ -66,8 +65,8 @@ public class AssetController {
 
         existing.setSize(dto.getSize());
         existing.setUsableSize(dto.getUsableSize());
-        Asset updated = assetService.updateAsset(existing);
-        return ResponseEntity.ok(AssetMapper.toDto(updated));
+        Asset updatedAsset = assetService.updateAsset(existing);
+        return ResponseEntity.ok(AssetMapper.toDto(updatedAsset));
     }
 
     @DeleteMapping("/{id}")

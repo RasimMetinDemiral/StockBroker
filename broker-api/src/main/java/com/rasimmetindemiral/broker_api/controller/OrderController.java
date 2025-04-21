@@ -4,7 +4,6 @@ import com.rasimmetindemiral.broker_api.mapper.OrderMapper;
 import com.rasimmetindemiral.broker_api.model.dto.OrderDto;
 import com.rasimmetindemiral.broker_api.model.entity.Customer;
 import com.rasimmetindemiral.broker_api.model.entity.Order;
-import com.rasimmetindemiral.broker_api.model.enums.OrderSide;
 import com.rasimmetindemiral.broker_api.model.enums.Role;
 import com.rasimmetindemiral.broker_api.security.CustomUserDetails;
 import com.rasimmetindemiral.broker_api.service.CustomerService;
