@@ -1,8 +1,6 @@
 # StockBroker
 Internal brokerage system API: Secure order management (CRUD) for stocks, designed for employee workflows.
 
-# Important Note: if you want to clone project,  use dev branch. 
-
 Requirements
 
   Ensure the following technologies are installed on your system:
